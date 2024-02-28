@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin: 10px;
+            width: 60px; /* Adjust width as needed */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Age Calculator</h1>
+        <label for="day">Day:</label>
+        <input type="text" id="day" name="day" placeholder="DD" maxlength="2">
+        <label for="month">Month:</label>
+        <input type="text" id="month" name="month" placeholder="MM" maxlength="2">
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year" placeholder="YYYY" maxlength="4">
+        <button onclick="calculateAge()">Calculate Age</button>
+        <p id="result"></p>
+        <button onclick="sendEmail()">Send Email</button>
+    </div>
+
+    <script>
+        function calculateAge() {
+            var day = document.getElementById('day').value;
+            var month = document.getElementById('month').value;
+            var year = document.getElementById('year').value;
+
+            // Convert to Date object
+            var dobDate = new Date(year, month - 1, day); // Month is 0-based
+
+            if (isNaN(dobDate.getTime())) {
+                alert("Please enter a valid date.");
+                return;
+            }
+
+            var today = new Date();
+            var age = today.getFullYear() - dobDate.getFullYear();
+            var m = today.getMonth() - dobDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+            var result = document.getElementById('result');
+            result.innerHTML = "Your age is: " + age;
+        }
+
+        function sendEmail() {
+            var day = document.getElementById('day').value;
+            var month = document.getElementById('month').value;
+            var year = document.getElementById('year').value;
+            var dob = day + "/" + month + "/" + year;
+            var age = calculateAgeWithoutDisplay();
+            var subject = "Date of Birth";
+            var body = "Date of Birth: " + dob + "%0D%0AAge: " + age;
+
+            // Use mailto to open default email client
+            var mailtoLink = "mailto:saianvesh736@example.com?subject=" + subject + "&body=" + body;
+            window.location.href = mailtoLink;
+        }
+
+        // Function to calculate age without displaying
+        function calculateAgeWithoutDisplay() {
+            var day = document.getElementById('day').value;
+            var month = document.getElementById('month').value;
+            var year = document.getElementById('year').value;
+
+            var dobDate = new Date(year, month - 1, day); // Month is 0-based
+            var today = new Date();
+            var age = today.getFullYear() - dobDate.getFullYear();
+            var m = today.getMonth() - dobDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+    </script>
+</body>
+</html>
